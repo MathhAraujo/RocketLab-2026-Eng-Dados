@@ -15,6 +15,13 @@ Este projeto implementa um pipeline ETL completo para um e-commerce, utilizando 
 
 O projeto também inclui a orquestração automatizada dos notebooks via Databricks Workflows, com execução diária agendada.
 
+## Checklist de Entregáveis (Requisitos da Atividade)
+- [x] **Notebooks `.ipynb`:** Disponíveis na pasta `Notebooks/` contendo a codificação PySpark/SQL e as exibições tabulares analíticas das camadas.
+- [x] **Comentários de Negócio:** Adicionados proativamente nas células que exigiram decisões de negócio, justificando exclusões de tabelas não-mapeadas e escolhas de modelagem contra o dataset.
+- [x] **Databricks Workflow (`.yaml`):** O job exportado sincronizado encontra-se no diretório `Job/ETL_RocketLab_Medallion.yaml`.
+- [x] **Print da Execução:** Imagens demonstrando o sucesso na ordem topológica da orquestração (Bronze > Silver > Gold) disponíveis na pasta `Prints/`.
+- [x] **Repositório Público no Github:** Organizado, estruturado e versionado segundo boas práticas.
+
 ## Arquitetura
 
 ```
@@ -57,9 +64,10 @@ RocketLab-2026-Eng-Dados/
 │   ├── 02_Silver.ipynb
 │   └── 03_Gold.ipynb
 ├── Job/
-│   └── job.yaml
+│   └── ETL_RocketLab_Medallion.yaml
 ├── Prints/
-│   └── execucao_job.png
+│   ├── Execução.png
+│   └── Workflow.png
 └── README.md
 ```
 
@@ -148,7 +156,7 @@ O notebook `03_Gold` constrói os Data Marts analíticos para consumo do negóci
 
 O pipeline é orquestrado via Databricks Workflows com 3 tasks sequenciais (Bronze, Silver, Gold), agendamento diário às 13:00 e tolerância a mudanças de schema via `.option("overwriteSchema", "true")`.
 
-A configuração do Job está exportada em `Job/job.yaml` e o print da execução bem-sucedida está disponível em `Prints/`.
+A configuração do Job está exportada em `Job/ETL_RocketLab_Medallion.yaml` e o print da execução bem-sucedida está disponível em `Prints/`.
 
 ## Como Executar
 
@@ -161,7 +169,7 @@ Acesso a um workspace Databricks (Community Edition ou superior) e o dataset Oli
 1. **Upload dos dados:** No Databricks, crie um Volume em `Catalog > workspace > default` chamado `olist_files` e faça upload dos 9 CSVs.
 2. **Importar notebooks:** Em `Workspace > Import`, importe os 3 arquivos `.ipynb` da pasta `Notebooks/`.
 3. **Executar na ordem:** `01_Bronze` (ingestão), `02_Silver` (transformações), `03_Gold` (Data Marts).
-4. **Configurar Workflow (opcional):** Importe o `job.yaml` em `Workflows` para automatizar a execução diária.
+4. **Configurar Workflow (opcional):** Importe o `ETL_RocketLab_Medallion.yaml` em `Workflows` para automatizar a execução diária.
 
 ### Parâmetros do Notebook Bronze
 

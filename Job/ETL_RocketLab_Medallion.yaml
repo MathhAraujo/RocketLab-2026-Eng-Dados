@@ -1,0 +1,28 @@
+resources:
+  jobs:
+    ETL_RocketLab_Medallion:
+      name: ETL_RocketLab_Medallion
+      schedule:
+        quartz_cron_expression: 11 0 13 * * ?
+        timezone_id: America/Bahia
+        pause_status: UNPAUSED
+      tasks:
+        - task_key: Bronze
+          notebook_task:
+            notebook_path: /Workspace/Users/mhma@cesar.school/01_Bronze
+            source: WORKSPACE
+        - task_key: Silver
+          depends_on:
+            - task_key: Bronze
+          notebook_task:
+            notebook_path: /Workspace/Users/mhma@cesar.school/02_Silver
+            source: WORKSPACE
+        - task_key: Gold
+          depends_on:
+            - task_key: Silver
+          notebook_task:
+            notebook_path: /Workspace/Users/mhma@cesar.school/03_Gold
+            source: WORKSPACE
+      queue:
+        enabled: true
+      performance_target: PERFORMANCE_OPTIMIZED

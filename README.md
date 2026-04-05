@@ -25,34 +25,34 @@ O projeto também inclui a orquestração automatizada dos notebooks via Databri
 ## Arquitetura
 
 ```
-┌─────────────────────────────────────────────────────────────────────┐
-│                        FONTES DE DADOS                              │
-│   CSVs (Kaggle - Olist)              API (Banco Central - PTAX)     │
-└──────────────┬──────────────────────────────────┬───────────────────┘
-               │                                  │
-               ▼                                  ▼
-┌─────────────────────────────────────────────────────────────────────┐
-│  CAMADA BRONZE                                                      │
-│  Dados brutos + timestamp de ingestão                               │
-│  9 tabelas CSV + 1 tabela de cotação do dólar (API)                 │
-└──────────────────────────────┬──────────────────────────────────────┘
-                               │
-                               ▼
-┌─────────────────────────────────────────────────────────────────────┐
-│  CAMADA SILVER                                                      │
-│  Limpeza, deduplicação, tradução e padronização                     │
-│  Dimensões: consumidores, produtos, vendedores, cotação             │
-│  Fatos: pedidos, itens, pagamentos, avaliações, pedido_total        │
-│  Otimização: OPTIMIZE + ZORDER nas tabelas fato                     │
-└──────────────────────────────┬──────────────────────────────────────┘
-                               │
-                               ▼
-┌─────────────────────────────────────────────────────────────────────┐
-│  CAMADA GOLD                                                        │
-│  Data Marts analíticos com KPIs de negócio                          │
-│  Projeto 1: Visão Comercial (receitas, rankings de produtos)        │
-│  Projeto 2: Satisfação de Clientes (avaliações, rankings)           │
-└─────────────────────────────────────────────────────────────────────┘
+┌───────────────────────────────────────────────────────────────┐
+│                       FONTES DE DADOS                         │
+│  CSVs (Kaggle - Olist)          API (Banco Central - PTAX)    │
+└──────────────┬────────────────────────────────┬───────────────┘
+               │                                │
+               ▼                                ▼
+┌───────────────────────────────────────────────────────────────┐
+│  CAMADA BRONZE                                                │
+│  Dados brutos + timestamp de ingestão                         │
+│  9 tabelas CSV + 1 tabela de cotação do dólar (API)           │
+└───────────────────────────┬───────────────────────────────────┘
+                            │
+                            ▼
+┌───────────────────────────────────────────────────────────────┐
+│  CAMADA SILVER                                                │
+│  Limpeza, deduplicação, tradução e padronização               │
+│  Dimensões: consumidores, produtos, vendedores, cotação       │
+│  Fatos: pedidos, itens, pagamentos, avaliações, pedido_total  │
+│  Otimização: OPTIMIZE + ZORDER nas tabelas fato               │
+└───────────────────────────┬───────────────────────────────────┘
+                            │
+                            ▼
+┌───────────────────────────────────────────────────────────────┐
+│  CAMADA GOLD                                                  │
+│  Data Marts analíticos com KPIs de negócio                    │
+│  Projeto 1: Visão Comercial (receitas, rankings de produtos)  │
+│  Projeto 2: Satisfação de Clientes (avaliações, rankings)     │
+└───────────────────────────────────────────────────────────────┘
 ```
 
 ## Estrutura do Repositório
@@ -166,7 +166,7 @@ Acesso a um workspace Databricks (Community Edition ou superior) e o dataset Oli
 
 ### Passo a Passo
 
-1. **Upload dos dados:** No Databricks, crie um Volume em `Catalog > workspace > default` chamado `olist_files` e faça upload dos 9 CSVs.
+1. **Upload dos dados:** No Databricks, crie um Volume no seu catálogo (ex: `Catalog > seu_catalogo > default`) chamado `olist_files` e faça upload dos 9 CSVs.
 2. **Importar notebooks:** Em `Workspace > Import`, importe os 3 arquivos `.ipynb` da pasta `Notebooks/`.
 3. **Executar na ordem:** `01_Bronze` (ingestão), `02_Silver` (transformações), `03_Gold` (Data Marts).
 4. **Configurar Workflow (opcional):** Importe o `ETL_RocketLab_Medallion.yaml` em `Workflows` para automatizar a execução diária.
@@ -194,10 +194,8 @@ As colunas `customer_name`, `seller_name` e `product_name` constam no enunciado 
 | Tecnologia | Uso |
 |---|---|
 | Databricks | Plataforma de Data Lakehouse |
-| Apache Spark (PySpark) | Processamento distribuído de dados |
+| PySpark | Processamento distribuído e lógica de transformações |
 | Delta Lake | Formato de armazenamento otimizado |
-| SQL | Criação de databases e otimização |
-| Python | Lógica de transformações e ingestão de API |
 | API Banco Central (PTAX) | Cotação do dólar |
 
 ## Dataset

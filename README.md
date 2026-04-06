@@ -60,20 +60,20 @@ O projeto também inclui a orquestração automatizada dos notebooks via Databri
 ```
 RocketLab-2026-Eng-Dados/
 ├── Notebooks/
-│   ├── 01_Bronze.ipynb
-│   ├── 02_Silver.ipynb
-│   └── 03_Gold.ipynb
+│   ├── Atividade_land_to_bronze.ipynb
+│   ├── Atividade_bronze_to_silver.ipynb
+│   └── Atividade_silver_to_gold.ipynb
 ├── Job/
 │   └── ETL_RocketLab_Medallion.yaml
 ├── Prints/
-│   ├── Execução.png
+│   ├── Execuções.png
 │   └── Workflow.png
 └── README.md
 ```
 
 ## Camada Bronze
 
-O notebook `01_Bronze` é responsável pela ingestão dos dados brutos:
+O notebook `Atividade_land_to_bronze` é responsável pela ingestão dos dados brutos:
 
 1. Criação do database `bronze` no Data Lakehouse.
 2. Ingestão automatizada dos 9 CSVs do dataset Olist via loop dinâmico, que gera os nomes das tabelas automaticamente a partir dos nomes dos arquivos, eliminando mapeamentos manuais e facilitando a manutenção.
@@ -97,7 +97,7 @@ O notebook `01_Bronze` é responsável pela ingestão dos dados brutos:
 
 ## Camada Silver
 
-O notebook `02_Silver` aplica transformações rigorosas de qualidade de dados:
+O notebook `Atividade_bronze_to_silver` aplica transformações rigorosas de qualidade de dados:
 
 **Renomeação de colunas** para português, utilizando dicionários de mapeamento para facilitar a manutenção e leitura do código.
 
@@ -138,7 +138,7 @@ O notebook `02_Silver` aplica transformações rigorosas de qualidade de dados:
 
 ## Camada Gold
 
-O notebook `03_Gold` constrói os Data Marts analíticos para consumo do negócio.
+O notebook `Atividade_silver_to_gold` constrói os Data Marts analíticos para consumo do negócio.
 
 ### Projeto 1: Visão Comercial e Volume de Produtos
 
@@ -168,7 +168,7 @@ Acesso a um workspace Databricks (Community Edition ou superior) e o dataset Oli
 
 1. **Upload dos dados:** No Databricks, crie um Volume no seu catálogo (ex: `Catalog > seu_catalogo > default`) chamado `olist_files` e faça upload dos 9 CSVs.
 2. **Importar notebooks:** Em `Workspace > Import`, importe os 3 arquivos `.ipynb` da pasta `Notebooks/`.
-3. **Executar na ordem:** `01_Bronze` (ingestão), `02_Silver` (transformações), `03_Gold` (Data Marts).
+3. **Executar na ordem:** `Atividade_land_to_bronze` (ingestão), `Atividade_bronze_to_silver` (transformações), `Atividade_silver_to_gold` (Data Marts).
 4. **Configurar Workflow (opcional):** Importe o `ETL_RocketLab_Medallion.yaml` em `Workflows` para automatizar a execução diária.
 
 ### Parâmetros do Notebook Bronze
